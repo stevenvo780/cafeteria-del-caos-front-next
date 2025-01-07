@@ -45,7 +45,7 @@ const Sidebar: React.FC = () => {
 
   const fetchGuildMemberCount = async () => {
     try {
-      const response = await axios.get<number>(process.env.REACT_APP_API_URL + '/discord/guild/members');
+      const response = await axios.get<number>(process.env.NEXT_PUBLIC_API_URL + '/discord/guild/members');
       setGuildMemberCount(response.data);
     } catch (error) {
       console.error('Error fetching guild member count:', error);

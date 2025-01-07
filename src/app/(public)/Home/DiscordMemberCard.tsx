@@ -8,7 +8,7 @@ type DiscordMemberCardProps = {
 };
 
 const DiscordMemberCard: React.FC<DiscordMemberCardProps> = ({ guildMemberCount }) => {
-  const discordInviteLink = process.env.REACT_APP_DISCORD_TL_INVITE as string;
+  const discordInviteLink = process.env.NEXT_PUBLIC_DISCORD_TL_INVITE as string;
   return (
     <a
       href={discordInviteLink}

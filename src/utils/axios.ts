@@ -5,7 +5,7 @@ import { getCurrentUserToken, refreshUserToken } from '../utils/firebaseHelper';
 import { logout } from '../redux/auth';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 let activeCalls = 0;

@@ -5,10 +5,45 @@ import { FaDiscord, FaCircle } from 'react-icons/fa';
 
 interface DiscordButtonProps {
   inviteLink: string;
-  onlineCount: number | null;
+}
+async function getOnlineMembers() {
+  if (!process.env.NEXT_PUBLIC_API_URL) {
+    console.error('API URL no definida');
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discord/guild/online`, {
+      next: { revalidate: 60 },
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching online members:', error);
+    return null;
+  }
 }
 
-export default function DiscordButton({ inviteLink, onlineCount }: DiscordButtonProps) {
+export default function DiscordButton({ inviteLink }: DiscordButtonProps) {
+  
+  const [onlineCount, setOnlineCount] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    getOnlineMembers().then((data) => {
+      if (data) {
+        setOnlineCount(data.online);
+      }
+    });
+  }, []);
+  
   return (
     <>
       <a

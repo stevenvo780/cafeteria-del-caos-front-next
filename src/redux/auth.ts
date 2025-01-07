@@ -8,11 +8,9 @@ interface AuthState {
   userData: User | null;
 }
 
-const persistedUser = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : null;
-
 const initialState: AuthState = {
-  isLoggedIn: !!persistedUser,
-  userData: persistedUser,
+  isLoggedIn: false,
+  userData: null,
 };
 
 const auth = createSlice({
@@ -22,17 +20,30 @@ const auth = createSlice({
     login(state, action: PayloadAction<User>) {
       state.isLoggedIn = true;
       state.userData = action.payload;
-      localStorage.setItem('userData', JSON.stringify(action.payload));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('userData', JSON.stringify(action.payload));
+      }
     },
     logout(state) {
       state.isLoggedIn = false;
       state.userData = null;
-      localStorage.removeItem('userData');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('userData');
+      }
       signOutUser();
+    },
+    initializeAuth(state) {
+      if (typeof window !== 'undefined') {
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          state.userData = JSON.parse(userData);
+          state.isLoggedIn = true;
+        }
+      }
     },
   },
 });
 
-export const { login, logout } = auth.actions;
+export const { login, logout, initializeAuth } = auth.actions;
 
 export default auth.reducer;

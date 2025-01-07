@@ -1,46 +1,56 @@
 import './globals.css';
-import Header from '../components/Header';
-import SEOHeaders from '../components/SEOHeaders';
 import { Providers } from './providers';
-import DiscordButton from '../components/DiscordButton';
-import InfoAlert from '@/components/InfoAlert';
+import ClientLayout from '@/components/ClientLayout';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cafeteriadelcaos.com';
 
 export const metadata = {
-  title: 'Cafetería del Caos',
-  description: 'Debates, filosofía y pensamiento crítico.',
+  title: {
+    default: 'Cafetería del Caos | Espacio de Debates y Pensamiento Libre',
+    template: '%s | Cafetería del Caos'
+  },
+  description: 'Comunidad de debate y pensamiento libre donde las ideas más radicales encuentran su espacio. Debates filosóficos, políticos y sociales sin censura.',
+  keywords: ['debates', 'pensamiento libre', 'filosofía', 'discusiones', 'comunidad', 'política', 'teoría crítica'],
+  authors: [{ name: 'Cafetería del Caos' }],
+  creator: 'Cafetería del Caos',
+  publisher: 'Cafetería del Caos',
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: 'Cafetería del Caos',
+    description: 'Comunidad de debate y pensamiento libre donde las ideas más radicales encuentran su espacio.',
+    url: siteUrl,
+    siteName: 'Cafetería del Caos',
+    images: [{
+      url: '/images/logo.png',
+    }],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cafetería del Caos',
+    description: 'Comunidad de debate y pensamiento libre donde las ideas más radicales encuentran su espacio.',
+    creator: '@CafeteriaDelCaos',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  themeColor: '#1a1a1a',
 };
 
-async function getOnlineMembers() {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discord/guild/online`, {
-      next: { revalidate: 60 } // revalidar cada minuto
-    });
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching online members:', error);
-    return null;
-  }
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const onlineMemberCount = await getOnlineMembers();
-
   return (
     <html lang="es">
       <body>
         <Providers>
-          <SEOHeaders />
-          <Header />
-          <main>{children}</main>
-          <DiscordButton 
-            inviteLink={process.env.NEXT_PUBLIC_DISCORD_TL_INVITE!}
-            onlineCount={onlineMemberCount}
-          />
-          <InfoAlert />
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </Providers>
       </body>
     </html>
