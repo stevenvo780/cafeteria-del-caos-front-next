@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Form, Button, Container, Card, Row, Col, Modal, Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '@/redux/auth';
@@ -13,7 +13,7 @@ import { User } from '@/utils/types';
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
         const dataUser = response.data as User;
         dispatch(login(dataUser));
         dispatch(addNotification({ message: 'Bienvenido', color: 'success' }));
-        navigate('/');
+        router.push('/');
       }
     } catch (error: any) {
       console.error(error?.message);
@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
   };
 
   const handleRegister = () => {
-    navigate('/register');
+    router.push('/register');
   };
 
   const signInWithGoogle = async () => {
@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
         const dataUser = response.data as User;
         dispatch(login(dataUser));
         dispatch(addNotification({ message: 'Bienvenido', color: 'success' }));
-        navigate('/');
+        router.push('/');
       }
     } catch (error: any) {
       console.error(error?.message);

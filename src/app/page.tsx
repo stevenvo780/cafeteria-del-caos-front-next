@@ -7,13 +7,13 @@ import api from '../utils/axios';
 import { getPublications, addPublication, updatePublication, deletePublication } from '../redux/publications';
 import { addNotification } from '../redux/ui';
 import { RootState } from '../redux/store';
-import PublicationsList from './(public)/Home/PublicationsList';
-import Sidebar from './(public)/Home/Sidebar';
-import PublicationModal from './(public)/Home/PublicationModal';
-import ShareModal from './(public)/Home/ShareModal';
+import PublicationsList from './(public)/home/PublicationsList';
+import Sidebar from './(public)/home/Sidebar';
+import PublicationModal from './(public)/home/PublicationModal';
+import ShareModal from './(public)/home/ShareModal';
 import { Publication, Events, CreatePublicationDto, Like, LikeTarget } from '../utils/types';
 import ScrollableEvents from '../components/ScrollableEvents';
-import './(public)/Home/styles.css';
+import './(public)/home/styles.css';
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();

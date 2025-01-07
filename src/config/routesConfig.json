@@ -7,55 +7,56 @@
       "hidden": false
     },
     { 
-      "path": "/Library", 
+      "path": "/library", 
       "name": "Biblioteca",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/Events", 
+      "path": "/events", 
       "name": "Eventos",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/Normativa", 
+      "path": "/normativa", 
       "name": "Normativa",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/About", 
+      "path": "/about", 
       "name": "Nosotros",
       "viewHeader": true,
       "hidden": false
     },
+    
     { 
-      "path": "/Debates", 
+      "path": "/debates", 
       "name": "Debates",
       "viewHeader": true,
       "hidden": true
     },
     { 
-      "path": "/Products", 
+      "path": "/products", 
       "name": "Tienda",
       "viewHeader": true,
       "hidden": true
     },
     { 
-      "path": "/Ranking", 
+      "path": "/ranking", 
       "name": "Ranking",
       "viewHeader": true,
       "hidden": true
     },
     { 
-      "path": "/Login", 
+      "path": "/login", 
       "name": "Login",
       "viewHeader": false,
       "hidden": false
     },
     { 
-      "path": "/Register", 
+      "path": "/register", 
       "name": "Register",
       "viewHeader": false,
       "hidden": false
@@ -65,13 +66,25 @@
       "name": "Detalle de Evento",
       "viewHeader": false,
       "hidden": false
+    },
+    {
+      "path": "/privacyNotice",
+      "name": "Aviso de Privacidad",
+      "viewHeader": false,
+      "hidden": false
+    },
+    { 
+      "path": "/privacyPolicies", 
+      "name": "Políticas de Privacidad",
+      "viewHeader": false,
+      "hidden": true
     }
   ],
   "roleRoutes": {
     "user": [],
     "editor": [
       {
-        "path": "/Publications/manage",
+        "path": "/publications/manage",
         "name": "Gestionar Publicaciones",
         "protected": true,
         "viewHeader": true,
@@ -80,14 +93,14 @@
     ],
     "admin": [
       {
-        "path": "/NormativaStaff",
+        "path": "/normativaStaff",
         "name": "Normativa Staff",
         "protected": true,
         "viewHeader": true,
         "hidden": false
       },
       {
-        "path": "/Events/manage",
+        "path": "/events/manage",
         "name": "Gestionar Eventos",
         "protected": true,
         "viewHeader": true,
@@ -96,21 +109,21 @@
     ],
     "super_admin": [
       {
-        "path": "/Users",
+        "path": "/users",
         "name": "Usuarios",
         "protected": true,
         "viewHeader": true,
         "hidden": true
       },
       {
-        "path": "/UsersDiscord",
+        "path": "/usersDiscord",
         "name": "Usuarios Discord",
         "protected": true,
         "viewHeader": true,
         "hidden": true
       },
       {
-        "path": "/Templates",
+        "path": "/templates",
         "name": "Plantillas",
         "protected": true,
         "viewHeader": true,
