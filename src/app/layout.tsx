@@ -52,7 +52,9 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <Providers>
           <ClientLayout>
-            {children}
+            <div style={{ marginTop: '1rem' }}>
+              {children}
+            </div>
           </ClientLayout>
         </Providers>
       </body>

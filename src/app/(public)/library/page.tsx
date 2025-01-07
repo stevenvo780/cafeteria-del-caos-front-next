@@ -22,10 +22,14 @@ interface LibraryReference {
   title: string;
 }
 
-const LibraryPage: React.FC = () => {
-  const params = useParams();
+interface LibraryPageProps {
+  initialNoteId?: string;
+}
+
+const LibraryPage: React.FC<LibraryPageProps> = ({ initialNoteId }) => {
   const router = useRouter();
-  const noteId = params?.noteId as string;
+  const params = useParams();
+  const noteId = initialNoteId || params?.noteId as string;
   const dispatch = useDispatch();
   const libraries = useSelector((state: RootState) => state.library.libraries);
   const [currentNote, setCurrentNote] = useState<Library | null>(null);
@@ -130,23 +134,25 @@ const LibraryPage: React.FC = () => {
     if (currentNote) {
       setNavigationStack([...navigationStack, currentNote]);
     }
+    router.push(`/library/${note.id}`);
     const fetchedNote = await fetchNoteById(note.id);
     if (fetchedNote) {
-      router.push(`/library/${note.id}`);
+      setCurrentNote(fetchedNote);
     }
   };
 
   const handleGoBack = async () => {
     const previousNote = navigationStack.pop();
-    setCurrentNote(previousNote || null);
     setNavigationStack([...navigationStack]);
 
     if (!previousNote) {
       router.push('/library');
       await fetchLibraries();
+      setCurrentNote(null);
     } else {
       router.push(`/library/${previousNote.id}`);
-      await fetchNoteById(previousNote.id);
+      const fetchedNote = await fetchNoteById(previousNote.id);
+      setCurrentNote(fetchedNote);
     }
   };
 
