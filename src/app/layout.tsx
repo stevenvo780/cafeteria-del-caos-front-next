@@ -1,6 +1,8 @@
-import './globals.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Providers } from './providers';
 import ClientLayout from '@/components/ClientLayout';
+import './globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cafeteriadelcaos.com';
 

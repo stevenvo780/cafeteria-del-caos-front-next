@@ -1,11 +1,15 @@
+'use client';
 import axios from 'axios';
+import { env } from './env';
 import store from '../redux/store';
 import { loading } from '../redux/ui';
-import { getCurrentUserToken, refreshUserToken } from '../utils/firebaseHelper';
+import { getCurrentUserToken, refreshUserToken } from './firebaseHelper';
 import { logout } from '../redux/auth';
 
+console.log('API URL:', env.NEXT_PUBLIC_API_URL);
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: env.NEXT_PUBLIC_API_URL,
 });
 
 let activeCalls = 0;
