@@ -2,11 +2,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Events } from '../utils/types';
 
-function convertUTCToLocal(date: Date): Date {
-  const utcDate = new Date(date);
-  const offset = utcDate.getTimezoneOffset() * 60000;
-  return new Date(utcDate.getTime() - offset);
-}
+// Eliminar esta función ya que manejaremos fechas como strings
+// function convertUTCToLocal(date: Date): Date {
+//   const utcDate = new Date(date);
+//   const offset = utcDate.getTimezoneOffset() * 60000;
+//   return new Date(utcDate.getTime() - offset);
+// }
 
 interface EventsState {
   events: Events[];
@@ -25,25 +26,25 @@ const eventsSlice = createSlice({
     getEvents(state, action: PayloadAction<Events[]>) {
       state.events = action.payload.map(event => ({
         ...event,
-        eventDate: convertUTCToLocal(event.eventDate),
-        startDate: convertUTCToLocal(event.startDate),
-        endDate: convertUTCToLocal(event.endDate),
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventDate: event.eventDate,
       }));
     },
     getEvent(state, action: PayloadAction<Events>) {
       state.selectedEvent = {
         ...action.payload,
-        eventDate: convertUTCToLocal(action.payload.eventDate),
-        startDate: convertUTCToLocal(action.payload.startDate),
-        endDate: convertUTCToLocal(action.payload.endDate),
+        startDate: action.payload.startDate,
+        endDate: action.payload.endDate,
+        eventDate: action.payload.eventDate,
       };
     },
     addEvent(state, action: PayloadAction<Events>) {
       const newEvent = {
         ...action.payload,
-        eventDate: convertUTCToLocal(action.payload.eventDate),
-        startDate: convertUTCToLocal(action.payload.startDate),
-        endDate: convertUTCToLocal(action.payload.endDate),
+        eventDate: action.payload.eventDate,
+        startDate: action.payload.startDate,
+        endDate: action.payload.endDate,
       };
       state.events.push(newEvent);
     },
@@ -52,9 +53,9 @@ const eventsSlice = createSlice({
       if (index !== -1) {
         state.events[index] = {
           ...action.payload,
-          eventDate: convertUTCToLocal(action.payload.eventDate),
-          startDate: convertUTCToLocal(action.payload.startDate),
-          endDate: convertUTCToLocal(action.payload.endDate),
+          eventDate: action.payload.eventDate,
+          startDate: action.payload.startDate,
+          endDate: action.payload.endDate,
         };
       }
     },

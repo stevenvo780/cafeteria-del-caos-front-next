@@ -35,9 +35,9 @@ export interface Events extends SharedProp {
   id?: number | null;
   title: string;
   description: string;
-  eventDate: Date;
-  startDate: Date;
-  endDate: Date;
+  eventDate: string;    // Cambiado a string
+  startDate: string;    // Cambiado a string
+  endDate: string;      // Cambiado a string
   author?: User;
   repetition?: Repetition;
 }
@@ -54,14 +54,17 @@ export interface CreateEventDto {
 export interface CalendarEvent {
   id?: number | null;
   title: string;
-  start: Date | string;
-  end: Date | string;
+  start: string;        // Cambiado a string
+  end: string;          // Cambiado a string
   allDay?: boolean;
   url?: string;
   classNames?: string[];
   editable?: boolean;
   extendedProps?: {
     description?: string;
+    repetition?: Repetition;
+    originalStart?: string;  // Añadido para eventos recurrentes
+    originalEnd?: string;    // Añadido para eventos recurrentes
   };
 }
 

@@ -1,12 +1,13 @@
 import moment from 'moment';
-import api from '@/utils/axios';
 import { Events } from '@/utils/types';
 import EventDetailClient from './EventDetailClient';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
-    const response = await api.get(`/events/${params.id}`);
-    const event: Events = response.data;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${baseUrl}/events/${params.id}`);
+    const event: Events = await response.json();
+    
     const plainDescription = event.description.replace(/<[^>]+>/g, '').substring(0, 160);
     const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/events/${params.id}`;
 
@@ -49,13 +50,17 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
 export default async function Page({ params }: { params: { id: string } }) {
   try {
-    const response = await api.get(`/events/${params.id}`);
-    const eventData: Events = response.data;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const [eventResponse, upcomingResponse] = await Promise.all([
+      fetch(`${baseUrl}/events/${params.id}`),
+      fetch(`${baseUrl}/events/home/upcoming?limit=31`)
+    ]);
+
+    const eventData: Events = await eventResponse.json();
+    const upcomingEvents: Events[] = await upcomingResponse.json();
+
     eventData.startDate = moment.utc(eventData.startDate).local().toDate();
     eventData.endDate = moment.utc(eventData.endDate).local().toDate();
-
-    const upcomingResponse = await api.get(`/events/home/upcoming?limit=31`);
-    const upcomingEvents: Events[] = upcomingResponse.data;
 
     return (
       <EventDetailClient

@@ -38,10 +38,8 @@ const EventModal: React.FC<EventModalProps> = ({
     if (selectedEvent) {
       setTitle(selectedEvent.title);
       setDescription(selectedEvent.description);
-      const start = new Date(selectedEvent.startDate);
-      const end = selectedEvent.endDate ? new Date(selectedEvent.endDate) : new Date(start.getTime() + 3 * 60 * 60 * 1000);
-      setStartDate(start);
-      setEndDate(end);
+      setStartDate(new Date(selectedEvent.startDate));
+      setEndDate(new Date(selectedEvent.endDate));
       setRepetition(selectedEvent.repetition || Repetition.NONE);
     }
   }, [selectedEvent]);
@@ -55,15 +53,25 @@ const EventModal: React.FC<EventModalProps> = ({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
-    const currentDate = new Date();
+    if (!startDate || !endDate) return;
 
-    if ( (selectedEvent && selectedEvent.repetition === Repetition.NONE) && (startDate && startDate < currentDate)) {
-      dispatch(addNotification({ message: 'La fecha de inicio no puede ser anterior a la fecha actual', color: 'danger' }));
+    const currentDate = new Date();
+    const startDateTime = startDate;
+    const endDateTime = endDate;
+
+    if ((selectedEvent?.repetition === Repetition.NONE) && startDateTime < currentDate) {
+      dispatch(addNotification({ 
+        message: 'La fecha de inicio no puede ser anterior a la fecha actual', 
+        color: 'danger' 
+      }));
       return;
     }
 
-    if (endDate && startDate && endDate < startDate) {
-      dispatch(addNotification({ message: 'La fecha de fin no puede ser anterior a la fecha de inicio', color: 'danger' }));
+    if (endDateTime < startDateTime) {
+      dispatch(addNotification({ 
+        message: 'La fecha de fin no puede ser anterior a la fecha de inicio', 
+        color: 'danger' 
+      }));
       return;
     }
 
@@ -72,26 +80,36 @@ const EventModal: React.FC<EventModalProps> = ({
         ...selectedEvent,
         title,
         description,
-        startDate: moment(startDate!).utc().format(),
-        endDate: moment(endDate!).utc().format(),
+        startDate: startDateTime.toISOString(),
+        endDate: endDateTime.toISOString(),
+        eventDate: startDateTime.toISOString(),
         repetition,
-      } as unknown as Events;
-      if (isEditing && selectedEvent && selectedEvent.id !== null) {
+      };
 
+      if (isEditing && selectedEvent?.id) {
         await api.patch(`/events/${selectedEvent.id}`, eventData);
         dispatch(updateEvent(eventData));
-        dispatch(addNotification({ message: 'Evento actualizado correctamente', color: 'success' }));
+        dispatch(addNotification({ 
+          message: 'Evento actualizado correctamente', 
+          color: 'success' 
+        }));
       } else {
-
         const response = await api.post('/events', eventData);
         dispatch(addEvent(response.data));
-        dispatch(addNotification({ message: 'Evento creado correctamente', color: 'success' }));
+        dispatch(addNotification({ 
+          message: 'Evento creado correctamente', 
+          color: 'success' 
+        }));
       }
+      
       fetchEvents();
       setShowModal(false);
     } catch (error) {
       console.error('Error saving event:', error);
-      dispatch(addNotification({ message: 'Error al guardar el evento', color: 'danger' }));
+      dispatch(addNotification({ 
+        message: 'Error al guardar el evento', 
+        color: 'danger' 
+      }));
     }
   };
 

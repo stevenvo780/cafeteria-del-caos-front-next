@@ -14,54 +14,65 @@ export const getColorForTitle = (title: string): string => {
   return COLORS[Math.abs(hash) % COLORS.length];
 };
 
-export const convertToCalendarEvent = (event: Events): EventInput => ({
-  id: event.id ? event.id.toString() : undefined,
-  title: event.title,
-  start: event.startDate,
-  end: event.endDate,
-  backgroundColor: getColorForTitle(event.title),
-  extendedProps: {
-    description: event.description,
-    repetition: event.repetition,
-    author: event.author,
-  },
-});
+export const convertToCalendarEvent = (event: Events): EventInput => {
+  return {
+    id: event.id?.toString(),
+    title: event.title,
+    start: event.startDate,
+    end: event.endDate,
+    backgroundColor: getColorForTitle(event.title),
+    extendedProps: {
+      description: event.description,
+      repetition: event.repetition,
+      author: event.author,
+      originalStart: event.startDate,
+      originalEnd: event.endDate
+    }
+  };
+};
 
 export const convertToBackendEvent = (calendarEvent: EventInput): Events => ({
-  id: calendarEvent.id ? Number(calendarEvent.id) : null,
+  id: calendarEvent.id ? Number(calendarEvent.id.split('-')[0]) : null, // Manejar IDs de eventos recurrentes
   title: calendarEvent.title || '',
   description: calendarEvent.extendedProps?.description || '',
-  startDate: new Date(calendarEvent.start as string),
-  endDate: calendarEvent.end ? new Date(calendarEvent.end as string) : new Date(calendarEvent.start as string),
-  eventDate: new Date(calendarEvent.start as string),
+  startDate: calendarEvent.extendedProps?.originalStart || calendarEvent.start as string,
+  endDate: calendarEvent.extendedProps?.originalEnd || (calendarEvent.end as string) || calendarEvent.start as string,
+  eventDate: calendarEvent.extendedProps?.originalStart || calendarEvent.start as string,
   repetition: calendarEvent.extendedProps?.repetition,
 });
 
 export const generateRecurringEvents = (event: Events): EventInput[] => {
-  const events: EventInput[] = [];
+  if (!event.startDate || !event.endDate) return [];
+
   const startDate = new Date(event.startDate);
   const endDate = new Date(event.endDate);
+  const duration = differenceInHours(endDate, startDate);
 
   if (!event.repetition || event.repetition === Repetition.NONE) {
     return [convertToCalendarEvent(event)];
   }
 
-  let currentDate = startDate;
-  let occurrenceIndex = 0;
+  const events: EventInput[] = [];
+  let currentDate = new Date(startDate);
   const oneYearFromStart = add(startDate, { years: 1 });
+  let index = 0;
 
   while (isBefore(currentDate, oneYearFromStart)) {
+    const eventEnd = add(currentDate, { hours: duration });
+    
     events.push({
-      id: event.id ? `${event.id}-${occurrenceIndex}` : undefined,
+      id: `${event.id}-${index}`,
       title: event.title,
       start: currentDate.toISOString(),
-      end: add(currentDate, { hours: differenceInHours(endDate, startDate) }).toISOString(),
+      end: eventEnd.toISOString(),
       backgroundColor: getColorForTitle(event.title),
       extendedProps: {
         description: event.description,
         repetition: event.repetition,
         author: event.author,
-      },
+        originalStart: event.startDate,
+        originalEnd: event.endDate
+      }
     });
 
     switch (event.repetition) {
@@ -71,20 +82,18 @@ export const generateRecurringEvents = (event: Events): EventInput[] => {
       case Repetition.WEEKLY:
         currentDate = add(currentDate, { weeks: 1 });
         break;
+      case Repetition.FIFTEEN_DAYS:
+        currentDate = add(currentDate, { days: 15 });
+        break;
       case Repetition.MONTHLY:
         currentDate = add(currentDate, { months: 1 });
         break;
       case Repetition.YEARLY:
         currentDate = add(currentDate, { years: 1 });
         break;
-      case Repetition.FIFTEEN_DAYS:
-        currentDate = add(currentDate, { days: 15 });
-        break;
-      default:
-        currentDate = add(currentDate, { years: 1 });
     }
-
-    occurrenceIndex += 1;
+    
+    index++;
   }
 
   return events;

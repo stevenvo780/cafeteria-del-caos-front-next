@@ -16,8 +16,8 @@ import api from '@/utils/axios';
 import { Events, UserRole, Repetition } from '@/utils/types';
 import EventModal from '@/components/EventModal';
 import { generateRecurringEvents } from './EventUtils';
-import "./styles.css";
 import { EventInput, EventClickArg } from '@fullcalendar/core';
+import { add } from 'date-fns';
 
 const EventsCalendar: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,14 +42,27 @@ const EventsCalendar: React.FC = () => {
   }, [showModal]);
 
   useEffect(() => {
-    const generatedEvents = eventsFromStore.flatMap(generateRecurringEvents);
+    const generatedEvents = eventsFromStore.flatMap(event => {
+      try {
+        return generateRecurringEvents(event);
+      } catch (error) {
+        console.error('Error generating recurring events:', error);
+        return [];
+      }
+    });
     setCalendarEvents(generatedEvents);
   }, [eventsFromStore]);
 
   const fetchEvents = async () => {
     try {
       const response = await api.get('/events');
-      dispatch(getEvents(response.data));
+      const eventsWithParsedDates = response.data.map((event: Events) => ({
+        ...event,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventDate: event.eventDate
+      }));
+      dispatch(getEvents(eventsWithParsedDates));
     } catch (error) {
       console.error('Error fetching events:', error);
       dispatch(addNotification({ message: 'Error al obtener los eventos', color: 'danger' }));
@@ -59,13 +72,14 @@ const EventsCalendar: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDateClick = (info: any) => {
     if (userRole?.role === UserRole.ADMIN || userRole?.role === UserRole.SUPER_ADMIN) {
+      const selectedDate = new Date(info.date);
       setSelectedEvent({
         id: null,
         title: '',
         description: '',
-        startDate: info.date,
-        endDate: info.date,
-        eventDate: info.date,
+        startDate: selectedDate.toISOString(),
+        endDate: add(selectedDate, { hours: 3 }).toISOString(),
+        eventDate: selectedDate.toISOString(),
         repetition: Repetition.NONE,
       });
       setIsEditing(false);
