@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import SEOHeaders from '../components/SEOHeaders';
 import { Providers } from './providers';
 import DiscordButton from '../components/DiscordButton';
+import InfoAlert from '@/components/InfoAlert';
 
 export const metadata = {
   title: 'Cafetería del Caos',
@@ -39,6 +40,7 @@ export default async function RootLayout({
             inviteLink={process.env.NEXT_PUBLIC_DISCORD_TL_INVITE!}
             onlineCount={onlineMemberCount}
           />
+          <InfoAlert />
         </Providers>
       </body>
     </html>
