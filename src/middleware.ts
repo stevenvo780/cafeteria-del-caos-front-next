@@ -7,9 +7,14 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get('session')
   const path = request.nextUrl.pathname
 
-  if (path.startsWith('/(protected)') || path.startsWith('/api')) {
+  // Verificar si es una ruta protegida
+  const isProtectedRoute = Object.values(routesConfig.roleRoutes)
+    .flat()
+    .some(route => route.protected && path.startsWith(route.path))
+
+  if (isProtectedRoute) {
     if (!session) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return NextResponse.redirect(new URL('/Login', request.url))
     }
 
     const tokenData = JSON.parse(atob(session.value.split('.')[1]))
@@ -24,17 +29,12 @@ export function middleware(request: NextRequest) {
 }
 
 function isRouteAllowedForRole(path: string, role: UserRole): boolean {
-  const publicPaths = routesConfig.publicRoutes.map(route => route.path)
-  if (publicPaths.includes(path)) return true
-
   const roleRoutes = routesConfig.roleRoutes[role] || []
-  return roleRoutes.some(route => route.path === path)
+  return roleRoutes.some(route => path.startsWith(route.path))
 }
 
 export const config = {
   matcher: [
-    '/(protected)/:path*',
-    '/api/:path*',
-    '/((?!_next/static|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ]
 }

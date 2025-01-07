@@ -7,45 +7,57 @@
       "hidden": false
     },
     { 
-      "path": "/library", 
+      "path": "/Library", 
       "name": "Biblioteca",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/events", 
+      "path": "/Events", 
       "name": "Eventos",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/normativa", 
+      "path": "/Normativa", 
       "name": "Normativa",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/about", 
+      "path": "/About", 
       "name": "Nosotros",
       "viewHeader": true,
       "hidden": false
     },
     { 
-      "path": "/debates", 
+      "path": "/Debates", 
       "name": "Debates",
       "viewHeader": true,
       "hidden": true
     },
     { 
-      "path": "/products", 
+      "path": "/Products", 
       "name": "Tienda",
       "viewHeader": true,
       "hidden": true
     },
     { 
-      "path": "/ranking", 
+      "path": "/Ranking", 
       "name": "Ranking",
       "viewHeader": true,
+      "hidden": true
+    },
+    { 
+      "path": "/Login", 
+      "name": "Login",
+      "viewHeader": false,
+      "hidden": true
+    },
+    { 
+      "path": "/Register", 
+      "name": "Register",
+      "viewHeader": false,
       "hidden": true
     }
   ],
@@ -53,36 +65,41 @@
     "user": [],
     "editor": [
       {
-        "path": "/publications/manage",
+        "path": "/Publications/manage",
         "name": "Gestionar Publicaciones",
+        "protected": true,
         "viewHeader": true,
         "hidden": true
       }
     ],
     "admin": [
       {
-        "path": "/normativa/staff",
+        "path": "/NormativaStaff",
         "name": "Normativa Staff",
+        "protected": true,
         "viewHeader": true,
         "hidden": false
       },
       {
-        "path": "/events/manage",
+        "path": "/Events/manage",
         "name": "Gestionar Eventos",
+        "protected": true,
         "viewHeader": true,
         "hidden": true
       }
     ],
     "super_admin": [
       {
-        "path": "/users",
+        "path": "/Users",
         "name": "Usuarios",
+        "protected": true,
         "viewHeader": true,
         "hidden": true
       },
       {
-        "path": "/templates",
+        "path": "/Templates",
         "name": "Plantillas",
+        "protected": true,
         "viewHeader": true,
         "hidden": true
       }

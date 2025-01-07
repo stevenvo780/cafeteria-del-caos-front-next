@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Navbar, Nav, Container, Dropdown, Image, Offcanvas } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -9,7 +9,7 @@ import routesConfig from '../config/routesConfig.json';
 import { CgMenuGridO } from "react-icons/cg";
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const userRole = useSelector((state: RootState) => state.auth.userData?.role);
@@ -18,11 +18,11 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     dispatch(logout());
-    navigate('/');
+    router.push('/');
   };
 
   const handleLoginRedirect = () => {
-    navigate('/login');
+    router.push('/Login');
   };
 
   const publicRoutes = routesConfig.publicRoutes;
@@ -37,6 +37,11 @@ const Header: React.FC = () => {
 
   const handleToggleSidebar = () => setShowSidebar(!showSidebar);
 
+  const handleRoute = (path: string) => {
+    router.push(path);
+    if (showSidebar) setShowSidebar(false);
+  };
+
   return (
     <>
       <Navbar expand="lg" className="navbar-dark" style={{
@@ -45,31 +50,33 @@ const Header: React.FC = () => {
         borderBottom: "1px solid var(--border-color)"
       }}>
         <Container fluid className="pl-4 pr-4">
-            <Navbar.Brand as={Link} to="/">
-            <Image
-              src="/images/logo.png"
-              alt="Logo"
-              style={{ width: '50px', height: '50px', objectFit: 'contain', padding: '5px', margin: '0 15px' }}
-            />
-            <span
-              style={{
-              fontFamily: "Montaga",
-              fontSize: "1.5rem",
-              color: "var(--font-color)",
-              fontWeight: "bold"
-              }}
-              className="ml-2"
-            >
-              Cafeteria del caos
-            </span>
-            </Navbar.Brand>
+            <div onClick={() => handleRoute('/')} className="navbar-brand" style={{ cursor: 'pointer' }}>
+              <Image
+                src="/images/logo.png"
+                alt="Logo"
+                style={{ width: '50px', height: '50px', objectFit: 'contain', padding: '5px', margin: '0 15px' }}
+              />
+              <span style={{
+                fontFamily: "Montaga",
+                fontSize: "1.5rem",
+                color: "var(--font-color)",
+                fontWeight: "bold"
+              }}>
+                Cafeteria del caos
+              </span>
+            </div>
           <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleToggleSidebar} />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end d-none d-lg-flex">
             <Nav>
               {mainRoutes.map((route, index) => (
-                <Nav.Link key={index} as={Link} to={route.path} className="custom-nav-link" style={{ color: "var(--font-color)" }}>
+                <div
+                  key={index}
+                  onClick={() => handleRoute(route.path)}
+                  className="nav-link custom-nav-link"
+                  style={{ color: "var(--font-color)", cursor: 'pointer' }}
+                >
                   <p style={{ color: "var(--font-color)", margin: 0 }}>{route.name}</p>
-                </Nav.Link>
+                </div>
               ))}
             </Nav>
             <Dropdown align="end">
@@ -78,7 +85,10 @@ const Header: React.FC = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {dropdownRoutes.map((route, index) => (
-                  <Dropdown.Item key={index} as={Link} to={route.path}>
+                  <Dropdown.Item 
+                    key={index} 
+                    onClick={() => handleRoute(route.path)}
+                  >
                     {route.name}
                   </Dropdown.Item>
                 ))}
@@ -114,28 +124,25 @@ const Header: React.FC = () => {
         <Offcanvas.Body>
           <Nav className="flex-column">
             {mainRoutes.map((route, index) => (
-              <Nav.Link
+              <div
                 key={index}
-                as={Link}
-                to={route.path}
-                onClick={handleToggleSidebar}
-                className="custom-nav-link"
-                style={{ color: "var(--font-color)" }}
+                onClick={() => { handleRoute(route.path); handleToggleSidebar(); }}
+                className="nav-link custom-nav-link"
+                style={{ color: "var(--font-color)", cursor: 'pointer' }}
               >
                 {route.name}
-              </Nav.Link>
+              </div>
             ))}
             <Dropdown.Divider />
             {dropdownRoutes.map((route, index) => (
-              <Nav.Link
+              <div
                 key={index}
-                as={Link}
-                to={route.path}
-                onClick={handleToggleSidebar}
-                style={{ color: "var(--font-color)" }}
+                onClick={() => { handleRoute(route.path); handleToggleSidebar(); }}
+                className="nav-link"
+                style={{ color: "var(--font-color)", cursor: 'pointer' }}
               >
                 {route.name}
-              </Nav.Link>
+              </div>
             ))}
             <Dropdown.Divider />
             {isLoggedIn ? (
