@@ -9,7 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import EventModal from '@/components/EventModal';
 import ScrollableEvents from '@/components/ScrollableEvents';
 import { FaEdit } from 'react-icons/fa';
-import { getNextOccurrence } from '../Events/EventUtils';
+import { getNextOccurrence } from '@/app/(public)/Events/EventUtils';
 import './styles.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';

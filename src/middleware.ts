@@ -6,7 +6,7 @@ import routesConfig from './config/routesConfig.json'
 export function middleware(request: NextRequest) {
   const session = request.cookies.get('session')
   const path = request.nextUrl.pathname
-
+  console.log('Path:', path)
   // Verificar si es una ruta protegida
   const isProtectedRoute = Object.values(routesConfig.roleRoutes)
     .flat()
@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
 
     const tokenData = JSON.parse(atob(session.value.split('.')[1]))
     const userRole = tokenData.role as UserRole
-
+    console.log('User role:', userRole)
     if (!isRouteAllowedForRole(path, userRole)) {
       return NextResponse.redirect(new URL('/', request.url))
     }
