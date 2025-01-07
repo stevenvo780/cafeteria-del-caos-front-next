@@ -20,13 +20,15 @@ const DiscordMemberCard: React.FC<DiscordMemberCardProps> = ({ guildMemberCount 
     >
       <Card style={{ marginBlock: 10, textAlign: 'center', backgroundColor: 'var(--discord-color)', borderColor: 'var(--discord-color)' }}>
         <Card.Body style={{ padding: 7, margin: 5, paddingTop: 5 }}>
-          <Card.Text style={{ fontSize: '1.5rem', color: 'var(--discord-text)' }}>
-            <div style={{ padding: 0, margin: 0, fontWeight: 'bold' }}>¡YA SOMOS!</div>
-            <div style={{ padding: 0, margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="discord-member-info" style={{ fontSize: '1.5rem', color: 'var(--discord-text)' }}>
+            <span style={{ padding: 0, margin: 0, fontWeight: 'bold', display: 'block' }}>
+              ¡YA SOMOS!
+            </span>
+            <span style={{ padding: 0, margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FaUsers size={30} color="var(--discord-text)" style={{ marginInline: 5 }} />  
               {guildMemberCount !== null ? guildMemberCount : 'Cargando...'}
-            </div>
-          </Card.Text>
+            </span>
+          </div>
         </Card.Body>
       </Card>
     </a>
