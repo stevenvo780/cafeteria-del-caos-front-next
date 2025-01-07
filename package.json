@@ -42,7 +42,9 @@
     "react-spinners": "^0.15.0",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
-    "uuid": "^11.0.4"
+    "uuid": "^11.0.4",
+    "style-loader": "^3.3.3",
+    "css-loader": "^6.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
