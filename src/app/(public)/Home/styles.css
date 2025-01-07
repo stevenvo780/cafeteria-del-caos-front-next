@@ -1,0 +1,31 @@
+/* Para navegadores WebKit (Chrome, Safari) */
+.scrollable-container::-webkit-scrollbar {
+  width: 0;  /* Oculta la barra de desplazamiento vertical */
+}
+
+/* Para Firefox */
+.scrollable-container {
+  scrollbar-width: none;  /* Oculta la barra de desplazamiento vertical */
+}
+
+/* Para IE y Edge */
+.scrollable-container {
+  -ms-overflow-style: none;  /* Oculta la barra de desplazamiento vertical */
+}
+
+.scrollable-container {
+  overflow-y: auto;  /* Hace que el contenedor sea desplazable verticalmente */
+  height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .scrollable-container {
+    height: 100vh;
+  }
+}
+
+.gradient-card {
+  background: linear-gradient(to bottom right, var(--primary-color), var(--primary-hover));
+  border-color: var(--primary-color);
+  color: white;
+}

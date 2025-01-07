@@ -1,0 +1,130 @@
+.top-users-container {
+  padding: 1rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+.top-users-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.title-icon {
+  margin-right: 5px;
+}
+
+.user-card {
+  padding: 15px;
+  margin: 8px 0;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-card:hover {
+  transform: scale(1.02);
+}
+
+.user-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gold {
+  background: linear-gradient(45deg, #FFD700 30%, #FFC400 90%);
+  color: black;
+  box-shadow: 0 3px 5px 2px rgba(0, 0, 0, 0.3);
+}
+
+.silver {
+  background: linear-gradient(45deg, #C0C0C0 30%, #A9A9A9 90%);
+  color: black;
+  box-shadow: 0 3px 5px 2px rgba(0, 0, 0, 0.3);
+}
+
+.bronze {
+  background: linear-gradient(45deg, #CD7F32 30%, #B87333 90%);
+  color: black;
+  box-shadow: 0 3px 5px 2px rgba(0, 0, 0, 0.3);
+}
+
+.default {
+  background: linear-gradient(45deg, #2c2c2c 30%, #3c3c3c 90%);
+  color: white;
+}
+
+.rank {
+  font-weight: bold;
+  font-size: 1.1em;
+  min-width: 35px;
+}
+
+.username {
+  font-weight: 500;
+  flex: 1;
+}
+
+.user-card-stats {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 15px;
+  margin-left: 45px;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  min-width: 60px;
+}
+
+.stat-icon {
+  font-size: 1.1em;
+}
+
+.stat-value {
+  font-weight: 500;
+}
+
+.coin-icon {
+  color: #333;
+}
+
+.penalty-icon {
+  color: #333;
+}
+
+.default .coin-icon,
+.default .penalty-icon {
+  color: #fff;
+}
+
+.stat-label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.default .stat-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-icon {
+  margin-right: 4px;
+}

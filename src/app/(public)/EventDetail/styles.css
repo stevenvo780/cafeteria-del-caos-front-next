@@ -1,0 +1,13 @@
+/* Calendario minimalista */
+.minimal-calendar {
+  margin: auto;
+  font-size: 0.8em;
+}
+
+/* Estilos para el texto del temporizador */
+.countdown-text {
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}

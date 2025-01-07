@@ -1,0 +1,177 @@
+{
+  "publicRoutes": [
+    { 
+      "path": "/", 
+      "element": "Home", 
+      "name": "Inicio", 
+      "viewHeader": true, 
+      "hidden": false,
+      "seo": {
+        "title": "Cafetería del Caos | Espacio de Debates y Pensamiento Libre",
+        "description": "Bienvenido al epicentro del caos intelectual. Un espacio para debates sin filtros, ideas radicales y discusiones que desafían la lógica convencional. ¡Únete a la revolución del pensamiento!",
+        "image": "/images/login.webp",
+        "keywords": "debates, pensamiento libre, filosofía, discusiones, comunidad, caos organizado, ideas radicales",
+        "type": "website"
+      }
+    },
+    { 
+      "path": "/library", 
+      "element": "Library", 
+      "name": "Biblioteca", 
+      "viewHeader": true, 
+      "hidden": false,
+      "seo": {
+        "title": "Biblioteca del Caos | Recursos y Textos Verificados",
+        "description": "Explora nuestra biblioteca verificada de textos, teorías y recursos. Munición intelectual para tus debates y discusiones en la Cafetería del Caos.",
+        "keywords": "biblioteca, recursos, textos verificados, teorías, conocimiento, aprendizaje",
+        "type": "article"
+      }
+    },
+    { 
+      "path": "/library/:noteId", 
+      "element": "Library", 
+      "name": "Biblioteca con Nota", 
+      "viewHeader": false, 
+      "hidden": false,
+      "seo": {
+        "title": "Texto en Detalle | Biblioteca del Caos",
+        "description": "Explora en profundidad textos y teorías que desafían el pensamiento convencional. Literatura y filosofía para mentes inquietas.",
+        "keywords": "textos filosóficos, teorías, pensamiento crítico, análisis, lectura profunda",
+        "type": "article"
+      }
+    },
+    { 
+      "path": "/events", 
+      "element": "Events", 
+      "name": "Eventos", 
+      "viewHeader": true, 
+      "hidden": false,
+      "seo": {
+        "title": "Eventos Semanales | Debates y Lecturas en Cafetería del Caos",
+        "description": "Participa en nuestros eventos semanales de debates incendiarios y lecturas mentalmente estimulantes. ¡Gana puntos y reconocimiento en la comunidad!",
+        "keywords": "eventos semanales, debates, lecturas, participación, comunidad, puntos",
+        "type": "events"
+      }
+    },
+    { 
+      "path": "/events/:id", 
+      "element": "EventDetail", 
+      "name": "Detalle de Evento", 
+      "viewHeader": false, 
+      "hidden": false,
+      "seo": {
+        "title": "Evento de Debate | Cafetería del Caos",
+        "description": "Información detallada del evento, horarios y temas a debatir. ¡Únete a las discusiones más intensas!",
+        "keywords": "eventos debate, discusiones, participación, comunidad pensante",
+        "type": "event"
+      }
+    },
+    { 
+      "path": "/normativa", 
+      "element": "Normativa", 
+      "name": "Normativa", 
+      "viewHeader": true, 
+      "hidden": false,
+      "seo": {
+        "title": "Normativas | Reglas del Caos Organizado",
+        "description": "Conoce las reglas que mantienen el equilibrio en nuestro caos. Moderación ligera pero firme para mantener un espacio de debate respetuoso y productivo.",
+        "keywords": "normativas, reglas, moderación, respeto, límites, convivencia",
+        "type": "article"
+      }
+    },
+    { 
+      "path": "/debates", 
+      "element": "Debates", 
+      "name": "Debates", 
+      "viewHeader": true, 
+      "hidden": true,
+      "seo": {
+        "title": "Debates | Cafetería del Caos",
+        "description": "Participa en debates intensos sobre filosofía, ciencia, política y más. Un espacio para el intercambio de ideas radicales.",
+        "keywords": "debates filosóficos, discusiones, ideas radicales, pensamiento crítico",
+        "type": "forum"
+      }
+    },
+    { 
+      "path": "/products", 
+      "element": "Products", 
+      "name": "Tienda", 
+      "viewHeader": true, 
+      "hidden": true,
+      "seo": {
+        "title": "Tienda | Cafetería del Caos",
+        "description": "Explora nuestra tienda virtual con stickers exclusivos, emojis personalizados y beneficios para tu experiencia en el servidor.",
+        "keywords": "tienda, merchandising, productos comunidad, material debate",
+        "type": "website"
+      }
+    },
+    { 
+      "path": "/ranking", 
+      "element": "Ranking", 
+      "name": "Ranking", 
+      "viewHeader": true, 
+      "hidden": true,
+      "seo": {
+        "title": "Ranking y Recompensas | Sistema de Méritos del Caos",
+        "description": "Descubre nuestro sistema de recompensas y ranking. Gana puntos, obtén stickers exclusivos, emojis personalizados y asciende hacia la moderación.",
+        "keywords": "ranking, recompensas, puntos, moderación, stickers, emojis, méritos",
+        "type": "website"
+      }
+    },
+    { 
+      "path": "/login", 
+      "element": "Login", 
+      "name": "Iniciar Sesión", 
+      "viewHeader": false, 
+      "hidden": false,
+      "seo": {
+        "title": "Iniciar Sesión | Cafetería del Caos",
+        "description": "Accede a tu cuenta en la comunidad de debate más caótica.",
+        "keywords": "login, acceso, cuenta usuario, comunidad debate",
+        "type": "website",
+        "robots": "noindex, nofollow"
+      }
+    },
+    { "path": "/register", "element": "Register", "name": "Registrarse", "viewHeader": false, "hidden": false },
+    { 
+      "path": "/about", 
+      "element": "About", 
+      "name": "Nosotros", 
+      "viewHeader": true, 
+      "hidden": false,
+      "seo": {
+        "title": "Sobre Nosotros | Misión y Visión de Cafetería del Caos",
+        "description": "Conoce nuestra misión de crear un espacio de caos organizado y nuestra visión de ser el refugio del pensamiento no convencional. Un laboratorio de ideas en constante evolución.",
+        "keywords": "misión, visión, valores, caos organizado, pensamiento libre, comunidad, debates",
+        "type": "website"
+      }
+    },
+    { "path": "/privacy", "element": "PrivacyPoliciesPage", "name": "Políticas de privacidad", "viewHeader": false, "hidden": true },
+    { "path": "/privacy-policies", "element": "PrivacyNoticePage", "name": "Aviso de privacidad", "viewHeader": false, "hidden": false }
+  ],
+  "roleRoutes": {
+    "user": [],
+    "admin": [
+      { 
+        "path": "/normativa/staff", 
+        "element": "NormativaStaff", 
+        "name": "Normativa Staff", 
+        "viewHeader": true, 
+        "hidden": false,
+        "seo": {
+          "title": "Normativa Staff | Cafetería del Caos",
+          "description": "Guías y normativas para el equipo de moderación.",
+          "keywords": "normativa staff, moderación, reglas internas",
+          "type": "article",
+          "robots": "noindex, nofollow"
+        }
+      }
+    ],
+    "super_admin": [
+      { "path": "/normativa/staff", "element": "NormativaStaff", "name": "Normativa Staff", "viewHeader": true, "hidden": false },
+      { "path": "/users", "element": "Users", "name": "Usuarios", "viewHeader": true, "hidden": true },
+      { "path": "/users/discord", "element": "UsersDiscord", "name": "Usuarios Discord", "viewHeader": false, "hidden": true },
+      { "path": "/templates", "element": "Template", "name": "Plantillas", "viewHeader": true, "hidden": true }
+    ]
+  }
+}
