@@ -7,7 +7,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import rrulePlugin from '@fullcalendar/rrule';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { addNotification } from '@/redux/ui';
 import { RootState } from '@/redux/store';
 import { getEvents } from '@/redux/events';
@@ -20,7 +20,7 @@ import { EventInput, EventClickArg } from '@fullcalendar/core';
 
 const EventsCalendar: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
   const eventsFromStore = useSelector((state: RootState) => state.events.events);
   const userRole = useSelector((state: RootState) => state.auth.userData);
   const [showModal, setShowModal] = useState(false);
@@ -76,7 +76,7 @@ const EventsCalendar: React.FC = () => {
 
   const handleEventClick = (info: EventClickArg) => {
     const eventId = info.event.id.includes('-') ? info.event.id.split('-')[0] : info.event.id;
-    navigate(`/events/${eventId}`);
+    router.push(`/events/${eventId}`);
   };
 
   return (

@@ -2,18 +2,18 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Library } from '@/utils/types';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 interface LatestNotesProps {
   notes: Library[];
 }
 
 const LatestNotes: React.FC<LatestNotesProps> = ({ notes }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleNoteClick = (noteId: number | null) => {
     if (noteId !== null) {
-      navigate(`/library/${noteId}`);
+      router.push(`/library/${noteId}`);
     }
   };
 

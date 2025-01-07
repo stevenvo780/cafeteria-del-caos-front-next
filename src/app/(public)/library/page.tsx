@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useRouter, useParams } from 'next/navigation';
 import { RootState } from '@/redux/store';
 import api from '@/utils/axios';
 import { getLibraries, addLibrary, updateLibrary, deleteLibrary } from '@/redux/library';
@@ -23,8 +23,9 @@ interface LibraryReference {
 }
 
 const LibraryPage: React.FC = () => {
-  const { noteId } = useParams<{ noteId: string | undefined }>();
-  const navigate = useNavigate();
+  const params = useParams();
+  const router = useRouter();
+  const noteId = params?.noteId as string;
   const dispatch = useDispatch();
   const libraries = useSelector((state: RootState) => state.library.libraries);
   const [currentNote, setCurrentNote] = useState<Library | null>(null);
@@ -131,7 +132,7 @@ const LibraryPage: React.FC = () => {
     }
     const fetchedNote = await fetchNoteById(note.id);
     if (fetchedNote) {
-      navigate(`/library/${note.id}`);
+      router.push(`/library/${note.id}`);
     }
   };
 
@@ -141,10 +142,10 @@ const LibraryPage: React.FC = () => {
     setNavigationStack([...navigationStack]);
 
     if (!previousNote) {
-      navigate('/library');
+      router.push('/library');
       await fetchLibraries();
     } else {
-      navigate(`/library/${previousNote.id}`);
+      router.push(`/library/${previousNote.id}`);
       await fetchNoteById(previousNote.id);
     }
   };

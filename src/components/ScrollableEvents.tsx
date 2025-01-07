@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import { Card, Col } from 'react-bootstrap';
 import { FaBook, FaFeatherAlt, FaGlasses, FaNewspaper, FaPenFancy, FaScroll, FaUniversity, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Events } from '../utils/types';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { BsBookHalf, BsBook, BsJournalBookmark, BsPen } from 'react-icons/bs';
 import { GiBookshelf, GiBookmark, GiQuillInk, GiOpenBook, GiScrollUnfurled, GiBrain, GiSpellBook } from 'react-icons/gi';
 import { MdLibraryBooks, MdMenuBook, MdOutlineAutoStories, MdOutlineClass, MdOutlineSchool } from 'react-icons/md';
@@ -50,7 +50,7 @@ interface ScrollableEventsProps {
 }
 
 const ScrollableEvents: React.FC<ScrollableEventsProps> = ({ events }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   let iconIndex = 0;
 
   const settings = {
@@ -88,7 +88,7 @@ const ScrollableEvents: React.FC<ScrollableEventsProps> = ({ events }) => {
 
   const handleEventClick = (eventId: number | null) => {
     if (eventId !== null) {
-      navigate(`/events/${eventId}`);
+      router.push(`/events/${eventId}`);
     }
   };
 

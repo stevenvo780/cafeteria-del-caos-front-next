@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { Container, Card, Row, Col } from 'react-bootstrap';
 import api from '@/utils/axios';
 import { Events } from '@/utils/types';
@@ -9,7 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import EventModal from '@/components/EventModal';
 import ScrollableEvents from '@/components/ScrollableEvents';
 import { FaEdit } from 'react-icons/fa';
-import { getNextOccurrence } from '@/app/(public)/Events/EventUtils';
+import { getNextOccurrence } from '@/app/(public)/events/EventUtils';
 import './styles.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -19,7 +19,8 @@ import moment from 'moment';
 import { Helmet } from 'react-helmet';
 
 const EventDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params?.id as string;
   const [event, setEvent] = useState<Events | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Events } from '@/utils/types';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import './styles.css';
 
 interface UpcomingEventsProps {
@@ -10,11 +10,11 @@ interface UpcomingEventsProps {
 }
 
 const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleEventClick = (eventId: number | null) => {
     if (eventId !== null) {
-      navigate(`/events/${eventId}`);
+      router.push(`/events/${eventId}`);
     }
   };
 
