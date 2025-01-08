@@ -23,11 +23,12 @@ interface LibraryReference {
   title: string;
 }
 
-interface LibraryPageProps {
+interface Props {
   initialNoteId?: string;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-const LibraryPage: React.FC<LibraryPageProps> = ({ initialNoteId }) => {
+const LibraryPage: React.FC<Props> = ({ initialNoteId }) => {
   const router = useRouter();
   const params = useParams();
   const noteId = initialNoteId || params?.noteId as string;

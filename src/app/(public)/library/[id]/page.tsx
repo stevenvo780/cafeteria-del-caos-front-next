@@ -1,8 +1,21 @@
 'use client';
-import { useParams } from 'next/navigation';
 import LibraryPage from '../page';
+import { Suspense } from 'react';
 
-export default function LibraryDetailPage() {
-  const params = useParams();
-  return <LibraryPage initialNoteId={params.id as string} />;
+interface PageProps {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+async function LibraryLoader({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  return <LibraryPage initialNoteId={resolvedParams.id} />;
+}
+
+export default function Page(props: PageProps) {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <LibraryLoader params={props.params} />
+    </Suspense>
+  );
 }
