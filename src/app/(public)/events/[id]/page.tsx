@@ -41,9 +41,10 @@ async function getUpcomingEvents() {
   return response.json();
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   try {
-    const event = await getEvent(params.id);
+    const event = await getEvent(resolvedParams.id);
     const startDate = moment.utc(event.startDate).local();
     const formattedDate = startDate.format('LL [a las] LT');
     const description = `${event.title} - ${formattedDate}. ${event.description.replace(/<[^>]*>/g, '').substring(0, 155)}...`;
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       openGraph: {
         title: `${event.title} - Cafetería del Caos`,
         description: description,
-        url: `${siteUrl}/events/${params.id}`,
+        url: `${siteUrl}/events/${resolvedParams.id}`,
         type: 'article',
         publishedTime: event.startDate,
         images: [{
@@ -82,20 +83,15 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-type EventLoaderProps = {
-  params: Promise<{ id: string }>;
-};
-
-async function EventLoader({ params }: EventLoaderProps) {
-  const { id: eventId } = await params;
-
+async function EventLoader({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   try {
     const [eventData, upcomingEvents] = await Promise.all([
-      getEvent(eventId),
+      getEvent(resolvedParams.id),
       getUpcomingEvents()
     ]);
 
@@ -121,7 +117,7 @@ async function EventLoader({ params }: EventLoaderProps) {
 export default function Page(props: PageProps) {
   return (
     <Suspense fallback={<div>Cargando...</div>}>
-      <EventLoader params={Promise.resolve(props.params)} />
+      <EventLoader params={props.params} />
     </Suspense>
   );
 }
