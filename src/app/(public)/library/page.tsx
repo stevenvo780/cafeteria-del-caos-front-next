@@ -2,14 +2,15 @@
 import { Metadata } from 'next';
 import serverApi from '@/utils/serverApi';
 import ClientLibrary from './ClientLibrary';
-import { Library } from '@/utils/types';
+import { Library, Like } from '@/utils/types';
 
-interface Props {
-  params: { noteId?: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+interface PageProps {
+  params: Promise<any>;
+  searchParams: Promise<any>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
   const baseMetadata = {
     title: 'Biblioteca | Cafetería del Caos',
     description: 'Explora nuestra biblioteca de conocimiento. Encuentra artículos, guías y recursos sobre diversos temas.',
@@ -28,9 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   };
 
-  if (params.noteId) {
+  if (id) {
     try {
-      const note = await serverApi.get<Library>(`/library/${params.noteId}`);
+      const note = await serverApi.get<Library>(`/library/${id}`);
       return {
         ...baseMetadata,
         title: `${note.data.title} | Biblioteca`,
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           ...baseMetadata.openGraph,
           title: `${note.data.title} | Biblioteca`,
           description: note.data.description.substring(0, 160),
-          url: `${process.env.NEXT_PUBLIC_SITE_URL}/library/${params.noteId}`,
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/library/${id}`,
         }
       };
     } catch (error) {
@@ -90,7 +91,7 @@ async function getInitialData(noteId?: string) {
       });
 
       const likesResults = await Promise.all(likesPromises);
-      const likesData = likesResults.reduce((acc: Record<number, any>, curr) => {
+      const likesData = likesResults.reduce((acc: Record<number, { likes: number; dislikes: number; userLike: Like | null }>, curr) => {
         acc[curr.id] = {
           likes: curr.likes,
           dislikes: curr.dislikes,
@@ -117,7 +118,8 @@ async function getInitialData(noteId?: string) {
   }
 }
 
-export default async function Page({ params }: Props) {
-  const initialData = await getInitialData(params.noteId);
+export default async function Page({ params }: PageProps) {
+  const { id } = await params; // Await the asynchronous params
+  const initialData = await getInitialData(id);
   return <ClientLibrary initialData={initialData} />;
 }

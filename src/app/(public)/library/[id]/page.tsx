@@ -2,16 +2,18 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import serverApi from '@/utils/serverApi';
-import { Library } from '@/utils/types';
+import { Library, Like } from '@/utils/types';
 import ClientLibrary from '../ClientLibrary';
+
+interface PageProps {
+  params: Promise<any>;
+  searchParams: Promise<any>;
+}
 
 export async function generateMetadata({
   params
-}: {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}): Promise<Metadata> {
-  const data = await params;
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
   const baseMetadata = {
     title: 'Biblioteca | Cafetería del Caos',
     description: 'Explora nuestra biblioteca de conocimiento. Encuentra artículos, guías y recursos sobre diversos temas.',
@@ -33,7 +35,7 @@ export async function generateMetadata({
   };
 
   try {
-    const note = await serverApi.get<Library>(`/library/${data.id}`);
+    const note = await serverApi.get<Library>(`/library/${id}`);
     const noteData = note?.data;
     if (noteData) {
       return {
@@ -44,7 +46,7 @@ export async function generateMetadata({
           ...baseMetadata.openGraph,
           title: `${noteData.title} | Biblioteca`,
           description: noteData.description.substring(0, 160),
-          url: `${process.env.NEXT_PUBLIC_SITE_URL}/library/${data.id}`
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/library/${id}`
         }
       };
     }
@@ -61,7 +63,7 @@ async function getInitialData(noteId?: string) {
       const [noteResponse, likesResponse, userLikeResponse] = await Promise.all([
         serverApi.get<Library>(`/library/${noteId}`),
         serverApi.get(`/likes/library/${noteId}/count`),
-        serverApi.get(`/likes/library/${noteId}/user-like`)
+        serverApi.get<Like>(`/likes/library/${noteId}/user-like`)
       ]);
 
       return {
@@ -85,7 +87,7 @@ async function getInitialData(noteId?: string) {
       const likesPromises = libraries.map(async (lib) => {
         const [likesCount, userLike] = await Promise.all([
           serverApi.get(`/likes/library/${lib.id}/count`),
-          serverApi.get(`/likes/library/${lib.id}/user-like`)
+          serverApi.get<Like>(`/likes/library/${lib.id}/user-like`)
         ]);
         return {
           id: lib.id,
@@ -96,7 +98,11 @@ async function getInitialData(noteId?: string) {
       });
 
       const likesResults = await Promise.all(likesPromises);
-      const likesData = likesResults.reduce((acc: Record<number, any>, curr) => {
+      const likesData = likesResults.reduce((acc: Record<string, { 
+        likes: number; 
+        dislikes: number; 
+        userLike: Like | null 
+      }>, curr) => {
         acc[curr.id] = {
           likes: curr.likes,
           dislikes: curr.dislikes,
@@ -123,14 +129,9 @@ async function getInitialData(noteId?: string) {
   }
 }
 
-export default async function Page({
-  params
-}: {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const data = await params;
-  const initialData = await getInitialData(data.id);
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+  const initialData = await getInitialData(id);
 
   return (
     <Suspense fallback={<div>Cargando...</div>}>
