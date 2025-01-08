@@ -1,16 +1,19 @@
 'use client';
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { Library, Like } from '@/utils/types';
+import Pagination from 'react-bootstrap/Pagination';
+
+import { Library, Like, UserRole } from '@/utils/types';
+import { getRoleInSpanish } from '@/utils/roleTranslation';
+import ActionButtons from '@/components/ActionButtons';
+
+// Puedes mover o importar tus siguientes componentes en la misma carpeta o donde prefieras:
 import LibraryList from './LibraryList';
 import LibraryFormModal from './LibraryFormModal';
 import ShareNoteModal from './ShareNoteModal';
-import ActionButtons from '@/components/ActionButtons';
-import Pagination from 'react-bootstrap/Pagination';
 import LibraryHeader from './LibraryHeader';
-import { getRoleInSpanish } from '@/utils/roleTranslation';
+
 import { useLibraryLogic } from './useLibraryLogic';
-import { UserRole } from '@/utils/types';
 
 interface ClientLibraryProps {
   initialData: {
@@ -53,10 +56,13 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
     handleShare,
     setShareModalVisible,
     setEditingLibrary,
-    fetchAvailableParents,
+    fetchAvailableParents
   } = useLibraryLogic(initialData);
 
-  const permissionsEditable = (userRole === UserRole.ADMIN || userRole === UserRole.SUPER_ADMIN || userRole === UserRole.EDITOR);
+  const permissionsEditable =
+    userRole === UserRole.ADMIN ||
+    userRole === UserRole.SUPER_ADMIN ||
+    userRole === UserRole.EDITOR;
 
   return (
     <>
@@ -73,17 +79,20 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
           }}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          handleSearch={handleSearch}  // Ya está tipado correctamente en useLibraryLogic
+          handleSearch={handleSearch}
           permissionsEditable={permissionsEditable}
         />
         {currentNote && <br />}
+
         <Row className={currentNote ? 'library-detail-container' : ''}>
           {currentNote && (
             <>
               <Col xs={12} md={12}>
                 <h4 className="m-0">{currentNote.title}</h4>
                 {currentNote.author && (
-                  <p className="text-muted m-0">{`${currentNote.author.name} - ${getRoleInSpanish(currentNote.author.role)}`}</p>
+                  <p className="text-muted m-0">
+                    {`${currentNote.author.name} - ${getRoleInSpanish(currentNote.author.role)}`}
+                  </p>
                 )}
                 <div dangerouslySetInnerHTML={{ __html: currentNote.description }} />
               </Col>
@@ -99,7 +108,10 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
             </>
           )}
         </Row>
+
         {currentNote && <br />}
+
+        {/* Muestra la lista de librerías o subnotas */}
         {!currentNote ? (
           <LibraryList
             libraries={libraries}
@@ -119,6 +131,7 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
         ) : (
           <p className="text-center text-muted">No hay subnotas.</p>
         )}
+
         <Pagination>
           {Array.from({ length: Math.ceil(totalItems / itemsPerPage) }, (_, idx) => (
             <Pagination.Item
@@ -132,6 +145,8 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
           ))}
         </Pagination>
       </Container>
+
+      {/* Solo si el usuario tiene permisos */}
       {permissionsEditable && (
         <LibraryFormModal
           show={showModal}
@@ -142,6 +157,8 @@ const ClientLibrary: React.FC<ClientLibraryProps> = ({ initialData }) => {
           currentNote={currentNote}
         />
       )}
+
+      {/* Modal de compartir */}
       {selectedLibrary && (
         <ShareNoteModal
           show={shareModalVisible}

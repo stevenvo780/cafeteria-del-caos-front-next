@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from 'next';
 import serverApi from '@/utils/serverApi';
 import ClientLibrary from './ClientLibrary';
@@ -5,6 +6,7 @@ import { Library } from '@/utils/types';
 
 interface Props {
   params: { noteId?: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -74,7 +76,6 @@ async function getInitialData(noteId?: string) {
         params: { page: 1, limit: 50 }
       });
 
-      // Fetch likes data for all libraries
       const likesPromises = librariesResponse.data.data.map(async (library: Library) => {
         const [likesCount, userLike] = await Promise.all([
           serverApi.get(`/likes/library/${library.id}/count`),
@@ -89,7 +90,7 @@ async function getInitialData(noteId?: string) {
       });
 
       const likesResults = await Promise.all(likesPromises);
-      const likesData = likesResults.reduce((acc, curr) => {
+      const likesData = likesResults.reduce((acc: Record<number, any>, curr) => {
         acc[curr.id] = {
           likes: curr.likes,
           dislikes: curr.dislikes,
@@ -116,7 +117,7 @@ async function getInitialData(noteId?: string) {
   }
 }
 
-export default async function LibraryPage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const initialData = await getInitialData(params.noteId);
   return <ClientLibrary initialData={initialData} />;
 }
