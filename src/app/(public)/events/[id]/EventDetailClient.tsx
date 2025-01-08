@@ -30,7 +30,7 @@ export default function EventDetailClient({
 
   const formatDateTime = (date: Date | null) => {
     if (!date) return 'No disponible';
-    return moment(date).format('LLL'); // Formato largo localizado
+    return moment(date).format('LLL');
   };
 
   useEffect(() => {
@@ -44,13 +44,11 @@ export default function EventDetailClient({
           clearInterval(intervalId);
           setTimeRemaining('¡El evento ha comenzado!');
         } else {
-          // Calcular días, horas, minutos y segundos
           const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-          // Formatear el tiempo restante según los días
           if (days > 0) {
             setTimeRemaining(`${days}d ${hours}h ${minutes}m`);
           } else {
@@ -99,9 +97,7 @@ export default function EventDetailClient({
               <Card.Text>
                 {formatDateTime(nextOccurrence)}
                 <br />
-                <small className="text-muted">
-                  (Tu zona horaria: {moment.tz.guess()})
-                </small>
+                <small className="text-muted">(Tu zona horaria: {moment.tz.guess()})</small>
               </Card.Text>
             </Card.Body>
           </Card>
