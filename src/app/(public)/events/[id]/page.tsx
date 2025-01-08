@@ -41,11 +41,44 @@ async function getUpcomingEvents() {
   return response.json();
 }
 
-export function generateMetadata() {
-  return {
-    title: 'Cafetería del Caos',
-    description: 'Detalles del evento'
-  };
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  try {
+    const event = await getEvent(params.id);
+    const startDate = moment.utc(event.startDate).local();
+    const formattedDate = startDate.format('LL [a las] LT');
+    const description = `${event.title} - ${formattedDate}. ${event.description.replace(/<[^>]*>/g, '').substring(0, 155)}...`;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    const imageUrl = event.imageUrl || `${siteUrl}/og-image.jpg`;
+
+    return {
+      title: `${event.title} - Cafetería del Caos`,
+      description: description,
+      openGraph: {
+        title: `${event.title} - Cafetería del Caos`,
+        description: description,
+        url: `${siteUrl}/events/${params.id}`,
+        type: 'article',
+        publishedTime: event.startDate,
+        images: [{
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: event.title
+        }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: event.title,
+        description: description,
+        images: [imageUrl],
+      },
+    };
+  } catch {
+    return {
+      title: 'Evento - Cafetería del Caos',
+      description: 'Detalles del evento en Cafetería del Caos'
+    };
+  }
 }
 
 interface PageProps {

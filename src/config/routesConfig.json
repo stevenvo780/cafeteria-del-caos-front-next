@@ -1,83 +1,174 @@
 {
   "publicRoutes": [
-    { 
-      "path": "/", 
+    {
+      "path": "/",
+      "element": "Home",
       "name": "Inicio",
       "viewHeader": true,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Cafetería del Caos | Espacio de Debates y Pensamiento Libre",
+        "description": "Bienvenido al epicentro del caos intelectual. Un espacio para debates sin filtros, ideas radicales y discusiones que desafían la lógica convencional.",
+        "keywords": "debates, pensamiento libre, filosofía, discusiones",
+        "type": "website"
+      }
     },
-    { 
-      "path": "/library", 
+    {
+      "path": "/library",
+      "element": "Library",
       "name": "Biblioteca",
       "viewHeader": true,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Biblioteca del Caos | Recursos y Textos Verificados",
+        "description": "Explora nuestra biblioteca verificada de textos, teorías y recursos. Munición intelectual para tus debates y discusiones en la Cafetería del Caos.",
+        "keywords": "biblioteca, recursos, textos verificados, teorías, conocimiento, aprendizaje",
+        "type": "article"
+      }
     },
-    { 
-      "path": "/events", 
+    {
+      "path": "/events",
+      "element": "Events",
       "name": "Eventos",
       "viewHeader": true,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Eventos Semanales | Debates y Lecturas en Cafetería del Caos",
+        "description": "Participa en nuestros eventos semanales de debates incendiarios y lecturas mentalmente estimulantes. ¡Gana puntos y reconocimiento en la comunidad!",
+        "keywords": "eventos semanales, debates, lecturas, participación, comunidad, puntos",
+        "type": "events"
+      }
     },
-    { 
-      "path": "/normativa", 
+    {
+      "path": "/normativa",
+      "element": "Normativa",
       "name": "Normativa",
       "viewHeader": true,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Normativas | Reglas del Caos Organizado",
+        "description": "Conoce las reglas que mantienen el equilibrio en nuestro caos. Moderación ligera pero firme para mantener un espacio de debate respetuoso y productivo.",
+        "keywords": "normativas, reglas, moderación, respeto, límites, convivencia",
+        "type": "article"
+      }
     },
-    { 
-      "path": "/about", 
+    {
+      "path": "/about",
+      "element": "About",
       "name": "Nosotros",
       "viewHeader": true,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Sobre Nosotros | Misión y Visión de Cafetería del Caos",
+        "description": "Conoce nuestra misión de crear un espacio de caos organizado y nuestra visión de ser el refugio del pensamiento no convencional. Un laboratorio de ideas en constante evolución.",
+        "keywords": "misión, visión, valores, caos organizado, pensamiento libre, comunidad, debates",
+        "type": "website"
+      }
     },
-    
-    { 
-      "path": "/debates", 
+    {
+      "path": "/debates",
+      "element": "Debates",
       "name": "Debates",
       "viewHeader": true,
-      "hidden": true
+      "hidden": true,
+      "seo": {
+        "title": "Debates | Cafetería del Caos",
+        "description": "Participa en debates intensos sobre filosofía, ciencia, política y más. Un espacio para el intercambio de ideas radicales.",
+        "keywords": "debates filosóficos, discusiones, ideas radicales, pensamiento crítico",
+        "type": "forum"
+      }
     },
-    { 
-      "path": "/products", 
+    {
+      "path": "/products",
+      "element": "Products",
       "name": "Tienda",
       "viewHeader": true,
-      "hidden": true
+      "hidden": true,
+      "seo": {
+        "title": "Tienda | Cafetería del Caos",
+        "description": "Explora nuestra tienda virtual con stickers exclusivos, emojis personalizados y beneficios para tu experiencia en el servidor.",
+        "keywords": "tienda, merchandising, productos comunidad, material debate",
+        "type": "website"
+      }
     },
-    { 
-      "path": "/ranking", 
+    {
+      "path": "/ranking",
+      "element": "Ranking",
       "name": "Ranking",
       "viewHeader": true,
-      "hidden": true
+      "hidden": true,
+      "seo": {
+        "title": "Ranking y Recompensas | Sistema de Méritos del Caos",
+        "description": "Descubre nuestro sistema de recompensas y ranking. Gana puntos, obtén stickers exclusivos, emojis personalizados y asciende hacia la moderación.",
+        "keywords": "ranking, recompensas, puntos, moderación, stickers, emojis, méritos",
+        "type": "website"
+      }
     },
-    { 
-      "path": "/login", 
+    {
+      "path": "/login",
+      "element": "Login",
       "name": "Login",
       "viewHeader": false,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Iniciar Sesión | Cafetería del Caos",
+        "description": "Accede a tu cuenta en la comunidad de debate más caótica.",
+        "keywords": "login, acceso, cuenta usuario, comunidad debate",
+        "type": "website",
+        "robots": "noindex, nofollow"
+      }
     },
-    { 
-      "path": "/register", 
-      "name": "Register",
+    {
+      "path": "/register",
+      "element": "Register",
+      "name": "Registrarse",
       "viewHeader": false,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Registrarse | Cafetería del Caos",
+        "description": "Crea tu cuenta en la comunidad de debate más caótica y comienza a participar.",
+        "keywords": "registrarse, crear cuenta, comunidad, debate",
+        "type": "website"
+      }
     },
-    { 
-      "path": "/events/[id]", 
+    {
+      "path": "/events/[id]",
+      "element": "EventDetail",
       "name": "Detalle de Evento",
       "viewHeader": false,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Evento de Debate | Cafetería del Caos",
+        "description": "Información detallada del evento, horarios y temas a debatir. ¡Únete a las discusiones más intensas!",
+        "keywords": "eventos debate, discusiones, participación, comunidad pensante",
+        "type": "event"
+      }
     },
     {
       "path": "/privacyNotice",
+      "element": "PrivacyNoticePage",
       "name": "Aviso de Privacidad",
       "viewHeader": false,
-      "hidden": false
+      "hidden": false,
+      "seo": {
+        "title": "Aviso de Privacidad | Cafetería del Caos",
+        "description": "Lee nuestro aviso de privacidad para entender cómo gestionamos tus datos.",
+        "keywords": "aviso de privacidad, datos personales, protección",
+        "type": "article"
+      }
     },
-    { 
-      "path": "/privacyPolicies", 
+    {
+      "path": "/privacyPolicies",
+      "element": "PrivacyPoliciesPage",
       "name": "Políticas de Privacidad",
       "viewHeader": false,
-      "hidden": true
+      "hidden": true,
+      "seo": {
+        "title": "Políticas de Privacidad | Cafetería del Caos",
+        "description": "Conoce nuestras políticas de privacidad y cómo protegemos tu información.",
+        "keywords": "políticas de privacidad, protección de datos, seguridad",
+        "type": "article"
+      }
     }
   ],
   "roleRoutes": {
@@ -88,7 +179,13 @@
         "name": "Gestionar Publicaciones",
         "protected": true,
         "viewHeader": true,
-        "hidden": true
+        "hidden": true,
+        "seo": {
+          "title": "Gestionar Publicaciones | Cafetería del Caos",
+          "description": "Administra y gestiona las publicaciones de la comunidad.",
+          "keywords": "gestionar publicaciones, administración, contenido",
+          "type": "dashboard"
+        }
       }
     ],
     "admin": [
@@ -97,14 +194,27 @@
         "name": "Normativa Staff",
         "protected": true,
         "viewHeader": true,
-        "hidden": false
+        "hidden": false,
+        "seo": {
+          "title": "Normativa Staff | Cafetería del Caos",
+          "description": "Guías y normativas para el equipo de moderación.",
+          "keywords": "normativa staff, moderación, reglas internas",
+          "type": "article",
+          "robots": "noindex, nofollow"
+        }
       },
       {
         "path": "/events/manage",
         "name": "Gestionar Eventos",
         "protected": true,
         "viewHeader": true,
-        "hidden": true
+        "hidden": true,
+        "seo": {
+          "title": "Gestionar Eventos | Cafetería del Caos",
+          "description": "Administra y organiza los eventos de la comunidad.",
+          "keywords": "gestionar eventos, administración, organización",
+          "type": "dashboard"
+        }
       }
     ],
     "super_admin": [
@@ -113,21 +223,40 @@
         "name": "Usuarios",
         "protected": true,
         "viewHeader": true,
-        "hidden": true
+        "hidden": true,
+        "seo": {
+          "title": "Usuarios | Cafetería del Caos",
+          "description": "Gestiona los usuarios de la plataforma.",
+          "keywords": "usuarios, gestión de usuarios, administración",
+          "type": "dashboard"
+        }
       },
       {
         "path": "/usersDiscord",
         "name": "Usuarios Discord",
         "protected": true,
-        "viewHeader": true,
-        "hidden": true
+        "viewHeader": false,
+        "hidden": true,
+        "seo": {
+          "title": "Usuarios Discord | Cafetería del Caos",
+          "description": "Administra los usuarios vinculados a Discord.",
+          "keywords": "usuarios Discord, administración, integración",
+          "type": "dashboard",
+          "robots": "noindex, nofollow"
+        }
       },
       {
-        "path": "/templates",
+        "path": "/template",
         "name": "Plantillas",
         "protected": true,
         "viewHeader": true,
-        "hidden": true
+        "hidden": true,
+        "seo": {
+          "title": "Plantillas | Cafetería del Caos",
+          "description": "Gestiona las plantillas utilizadas en la plataforma.",
+          "keywords": "plantillas, gestión de plantillas, administración",
+          "type": "dashboard"
+        }
       }
     ]
   }

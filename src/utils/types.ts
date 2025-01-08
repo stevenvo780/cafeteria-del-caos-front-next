@@ -35,11 +35,12 @@ export interface Events extends SharedProp {
   id?: number | null;
   title: string;
   description: string;
-  eventDate: string;    // Cambiado a string
-  startDate: string;    // Cambiado a string
-  endDate: string;      // Cambiado a string
+  eventDate: string;
+  startDate: string;
+  endDate: string;
   author?: User;
   repetition?: Repetition;
+  imageUrl?: string;
 }
 
 export interface CreateEventDto {

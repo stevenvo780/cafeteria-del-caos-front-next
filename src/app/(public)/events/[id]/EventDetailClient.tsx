@@ -79,6 +79,19 @@ export default function EventDetailClient({
       <Row style={{ marginBottom: '20px' }}>
         <Col md={8} className="order-first order-md-last mb-4">
           <Card>
+            {event.imageUrl && (
+              <Card.Img
+                variant="top"
+                src={event.imageUrl}
+                alt={event.title}
+                style={{
+                  width: '100%',
+                  height: '300px',
+                  objectFit: 'cover',
+                  borderBottom: '1px solid #dee2e6'
+                }}
+              />
+            )}
             <Card.Body>
               <Card.Title>{event.title}</Card.Title>
               <Card.Text dangerouslySetInnerHTML={{ __html: event.description }} />
