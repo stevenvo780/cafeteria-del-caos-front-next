@@ -12,6 +12,7 @@ import { RootState } from '@/redux/store';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './styles.css';
+import moment from 'moment-timezone';
 
 export default function EventDetailClient({
   event,
@@ -27,6 +28,11 @@ export default function EventDetailClient({
   const nextOccurrence = getNextOccurrence(event);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
+  const formatDateTime = (date: Date | null) => {
+    if (!date) return 'No disponible';
+    return moment(date).format('LLL'); // Formato largo localizado
+  };
+
   useEffect(() => {
     if (nextOccurrence) {
       const intervalId = setInterval(() => {
@@ -38,10 +44,18 @@ export default function EventDetailClient({
           clearInterval(intervalId);
           setTimeRemaining('¡El evento ha comenzado!');
         } else {
-          const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+          // Calcular días, horas, minutos y segundos
+          const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-          setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
+
+          // Formatear el tiempo restante según los días
+          if (days > 0) {
+            setTimeRemaining(`${days}d ${hours}h ${minutes}m`);
+          } else {
+            setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
+          }
         }
       }, 1000);
       return () => clearInterval(intervalId);
@@ -81,14 +95,14 @@ export default function EventDetailClient({
           </Card>
           <Card className="mb-4">
             <Card.Body>
-              <Card.Title>Fecha</Card.Title>
-              <Card.Text>{nextOccurrence ? nextOccurrence.toLocaleDateString() : 'Sin próxima fecha'}</Card.Text>
-            </Card.Body>
-          </Card>
-          <Card className="mb-4">
-            <Card.Body>
-              <Card.Title>Hora</Card.Title>
-              <Card.Text>{nextOccurrence ? nextOccurrence.toLocaleTimeString() : 'Sin próxima hora'}</Card.Text>
+              <Card.Title>Fecha y Hora</Card.Title>
+              <Card.Text>
+                {formatDateTime(nextOccurrence)}
+                <br />
+                <small className="text-muted">
+                  (Tu zona horaria: {moment.tz.guess()})
+                </small>
+              </Card.Text>
             </Card.Body>
           </Card>
           <Card className="mb-4">

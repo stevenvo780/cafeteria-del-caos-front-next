@@ -38,8 +38,9 @@ const EventModal: React.FC<EventModalProps> = ({
     if (selectedEvent) {
       setTitle(selectedEvent.title);
       setDescription(selectedEvent.description);
-      setStartDate(new Date(selectedEvent.startDate));
-      setEndDate(new Date(selectedEvent.endDate));
+      // Convertir las fechas UTC a local
+      setStartDate(moment.utc(selectedEvent.startDate).local().toDate());
+      setEndDate(moment.utc(selectedEvent.endDate).local().toDate());
       setRepetition(selectedEvent.repetition || Repetition.NONE);
     }
   }, [selectedEvent]);
@@ -56,8 +57,9 @@ const EventModal: React.FC<EventModalProps> = ({
     if (!startDate || !endDate) return;
 
     const currentDate = new Date();
-    const startDateTime = startDate;
-    const endDateTime = endDate;
+    // Convertir fechas locales a UTC antes de enviar
+    const startDateTime = moment(startDate).utc().toDate();
+    const endDateTime = moment(endDate).utc().toDate();
 
     if ((selectedEvent?.repetition === Repetition.NONE) && startDateTime < currentDate) {
       dispatch(addNotification({ 

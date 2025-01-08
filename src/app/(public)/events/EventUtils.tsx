@@ -1,8 +1,21 @@
 'use client';
 import { Events } from '@/utils/types';
-import { add, eachWeekOfInterval, eachMonthOfInterval, eachYearOfInterval, differenceInHours, isAfter, isBefore, set } from 'date-fns';
+import { 
+  add, 
+  differenceInHours, 
+  isAfter, 
+  isBefore, 
+  set,
+  startOfWeek,
+  startOfMonth,
+  startOfYear,
+  addWeeks,
+  addMonths,
+  addYears
+} from 'date-fns';
 import { EventInput } from '@fullcalendar/core';
 import { Repetition } from '@/utils/types';
+import moment from 'moment-timezone';
 
 const COLORS = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A6'];
 
@@ -15,64 +28,76 @@ export const getColorForTitle = (title: string): string => {
 };
 
 export const convertToCalendarEvent = (event: Events): EventInput => {
+  // Convertir las fechas UTC del backend a la zona horaria local
+  const localStart = moment.utc(event.startDate).local();
+  const localEnd = moment.utc(event.endDate).local();
+
   return {
-    id: event.id?.toString(),
+    id: event.id ? event.id.toString() : undefined,
     title: event.title,
-    start: event.startDate,
-    end: event.endDate,
+    start: localStart.toISOString(),
+    end: localEnd.toISOString(),
     backgroundColor: getColorForTitle(event.title),
     extendedProps: {
       description: event.description,
       repetition: event.repetition,
       author: event.author,
-      originalStart: event.startDate,
-      originalEnd: event.endDate
-    }
+      originalStart: event.startDate, // Mantener referencia UTC original
+      originalEnd: event.endDate,     // Mantener referencia UTC original
+    },
   };
 };
 
-export const convertToBackendEvent = (calendarEvent: EventInput): Events => ({
-  id: calendarEvent.id ? Number(calendarEvent.id.split('-')[0]) : null, // Manejar IDs de eventos recurrentes
-  title: calendarEvent.title || '',
-  description: calendarEvent.extendedProps?.description || '',
-  startDate: calendarEvent.extendedProps?.originalStart || calendarEvent.start as string,
-  endDate: calendarEvent.extendedProps?.originalEnd || (calendarEvent.end as string) || calendarEvent.start as string,
-  eventDate: calendarEvent.extendedProps?.originalStart || calendarEvent.start as string,
-  repetition: calendarEvent.extendedProps?.repetition,
-});
+export const convertToBackendEvent = (calendarEvent: EventInput): Events => {
+  // Convertir fechas locales a UTC para el backend
+  const utcStart = moment(calendarEvent.start).utc();
+  const utcEnd = calendarEvent.end ? moment(calendarEvent.end).utc() : utcStart;
+
+  return {
+    id: calendarEvent.id ? Number(calendarEvent.id.split('-')[0]) : null,
+    title: calendarEvent.title || '',
+    description: calendarEvent.extendedProps?.description || '',
+    startDate: utcStart.toISOString(),
+    endDate: utcEnd.toISOString(),
+    eventDate: utcStart.toISOString(),
+    repetition: calendarEvent.extendedProps?.repetition,
+  };
+};
 
 export const generateRecurringEvents = (event: Events): EventInput[] => {
-  if (!event.startDate || !event.endDate) return [];
-
-  const startDate = new Date(event.startDate);
-  const endDate = new Date(event.endDate);
+  const events: EventInput[] = [];
+  
+  // Convertir fechas UTC a objeto Date
+  const startDate = moment.utc(event.startDate).toDate();
+  const endDate = moment.utc(event.endDate).toDate();
   const duration = differenceInHours(endDate, startDate);
 
   if (!event.repetition || event.repetition === Repetition.NONE) {
     return [convertToCalendarEvent(event)];
   }
 
-  const events: EventInput[] = [];
-  let currentDate = new Date(startDate);
+  let currentDate = startDate;
+  let occurrenceIndex = 0;
   const oneYearFromStart = add(startDate, { years: 1 });
-  let index = 0;
 
   while (isBefore(currentDate, oneYearFromStart)) {
-    const eventEnd = add(currentDate, { hours: duration });
-    
+    // Crear fechas en UTC
+    const eventStart = moment(currentDate).utc();
+    const eventEnd = moment(currentDate).add(duration, 'hours').utc();
+
     events.push({
-      id: `${event.id}-${index}`,
+      id: event.id ? `${event.id}-${occurrenceIndex}` : undefined,
       title: event.title,
-      start: currentDate.toISOString(),
-      end: eventEnd.toISOString(),
+      start: eventStart.format(),
+      end: eventEnd.format(),
       backgroundColor: getColorForTitle(event.title),
       extendedProps: {
         description: event.description,
         repetition: event.repetition,
         author: event.author,
         originalStart: event.startDate,
-        originalEnd: event.endDate
-      }
+        originalEnd: event.endDate,
+      },
     });
 
     switch (event.repetition) {
@@ -82,18 +107,20 @@ export const generateRecurringEvents = (event: Events): EventInput[] => {
       case Repetition.WEEKLY:
         currentDate = add(currentDate, { weeks: 1 });
         break;
-      case Repetition.FIFTEEN_DAYS:
-        currentDate = add(currentDate, { days: 15 });
-        break;
       case Repetition.MONTHLY:
         currentDate = add(currentDate, { months: 1 });
         break;
       case Repetition.YEARLY:
         currentDate = add(currentDate, { years: 1 });
         break;
+      case Repetition.FIFTEEN_DAYS:
+        currentDate = add(currentDate, { days: 15 });
+        break;
+      default:
+        currentDate = add(currentDate, { years: 1 });
     }
-    
-    index++;
+
+    occurrenceIndex += 1;
   }
 
   return events;
@@ -101,7 +128,7 @@ export const generateRecurringEvents = (event: Events): EventInput[] => {
 
 export const getNextOccurrence = (event: Events): Date | null => {
   const now = new Date();
-  const startDate = new Date(event.startDate);
+  const startDate = moment.utc(event.startDate).local().toDate();
 
   if (!event.repetition || isAfter(startDate, now)) {
     return startDate;
@@ -120,21 +147,30 @@ export const getNextOccurrence = (event: Events): Date | null => {
     case Repetition.DAILY:
       nextDate = set(add(now, { days: 1 }), eventTime);
       break;
-    case Repetition.WEEKLY:
-      nextDate = eachWeekOfInterval({ start: startDate, end: add(now, { months: 1 }) })
-        .map(date => set(date, eventTime))
-        .find(date => isAfter(date, now));
+    case Repetition.WEEKLY: {
+      let weekStart = startOfWeek(startDate);
+      while (isBefore(weekStart, now)) {
+        weekStart = addWeeks(weekStart, 1);
+      }
+      nextDate = set(weekStart, eventTime);
       break;
-    case Repetition.MONTHLY:
-      nextDate = eachMonthOfInterval({ start: startDate, end: add(now, { years: 1 }) })
-        .map(date => set(date, eventTime))
-        .find(date => isAfter(date, now));
+    }
+    case Repetition.MONTHLY: {
+      let monthStart = startOfMonth(startDate);
+      while (isBefore(monthStart, now)) {
+        monthStart = addMonths(monthStart, 1);
+      }
+      nextDate = set(monthStart, eventTime);
       break;
-    case Repetition.YEARLY:
-      nextDate = eachYearOfInterval({ start: startDate, end: add(now, { years: 5 }) })
-        .map(date => set(date, eventTime))
-        .find(date => isAfter(date, now));
+    }
+    case Repetition.YEARLY: {
+      let yearStart = startOfYear(startDate);
+      while (isBefore(yearStart, now)) {
+        yearStart = addYears(yearStart, 1);
+      }
+      nextDate = set(yearStart, eventTime);
       break;
+    }
     case Repetition.FIFTEEN_DAYS:
       nextDate = generateOccurrencesEveryNDays(startDate, 15, now, eventTime)
         .find(date => isAfter(date, now));
