@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Col, Row, Form, Button } from 'react-bootstrap';
+import { Col, Row, Form, Button, InputGroup } from 'react-bootstrap';
 import { IoIosArrowBack } from "react-icons/io";
 import { BsFileEarmarkPlusFill } from "react-icons/bs";
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -14,7 +14,7 @@ interface LibraryHeaderProps {
   onCreate: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  handleSearch: () => void;
+  handleSearch: (query: string) => void;
   permissionsEditable: boolean;
 }
 
@@ -31,15 +31,17 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({
 }) => {
   const isMobile = window.innerWidth < 768;
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch(searchQuery);
+  };
+
   return (
     <Row>
       {!currentNote && (
         <Col xs={permissionsEditable ? 9 : 10} md={permissionsEditable ? 11 : 12}>
-          <Form className="mb-4" onSubmit={(e) => {
-            e.preventDefault();
-            handleSearch();
-          }}>
-            <Form.Group controlId="searchQuery">
+          <Form className="mb-4" onSubmit={handleSearchSubmit}>
+            <InputGroup>
               <Form.Control
                 type="text"
                 placeholder="Buscar en la biblioteca"
@@ -47,7 +49,10 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-dark text-light border-secondary"
               />
-            </Form.Group>
+              <Button variant="primary" type="submit">
+                Buscar
+              </Button>
+            </InputGroup>
           </Form>
         </Col>
       )}

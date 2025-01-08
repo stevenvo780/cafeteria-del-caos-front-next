@@ -86,6 +86,11 @@ export interface Library extends SharedProp {
   visibility: LibraryVisibility;
 }
 
+export interface LibraryReference {
+  id: number;
+  title: string;
+}
+
 export enum TemplateType {
   NOTES = 'Notes',
   EVENTS = 'Events',

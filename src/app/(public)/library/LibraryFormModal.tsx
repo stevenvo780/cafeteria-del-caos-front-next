@@ -20,7 +20,6 @@ interface LibraryFormModalProps {
   onHide: () => void;
   onSubmit: (libraryData: CreateLibraryDto | UpdateLibraryDto) => void;
   editingLibrary: Library | null;
-  showModal: boolean;
   availableParents: LibraryReference[];
   currentNote?: Library | null;
 }
@@ -30,7 +29,6 @@ const LibraryFormModal: React.FC<LibraryFormModalProps> = ({
   onHide,
   onSubmit,
   editingLibrary,
-  showModal,
   availableParents = [],
   currentNote,
 }) => {
@@ -141,7 +139,7 @@ const LibraryFormModal: React.FC<LibraryFormModalProps> = ({
 
   return (
     <>
-      {showModal && (
+      {show && (
         <Modal show={show} onHide={onHide} size="xl">
           <Modal.Header closeButton className="border-secondary">
             <Modal.Title style={{ color: 'var(--font-color)' }}>
