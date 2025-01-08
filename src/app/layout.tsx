@@ -25,6 +25,9 @@ export const metadata = {
     siteName: 'Cafetería del Caos',
     images: [{
       url: '/images/logo.png',
+      width: 800,
+      height: 600,
+      alt: 'Logo de Cafetería del Caos',
     }],
     locale: 'es_ES',
     type: 'website',
@@ -34,10 +37,19 @@ export const metadata = {
     title: 'Cafetería del Caos',
     description: 'Comunidad de debate y pensamiento libre donde las ideas más radicales encuentran su espacio.',
     creator: '@CafeteriaDelCaos',
+    images: [{
+      url: '/images/logo.png',
+      alt: 'Logo de Cafetería del Caos',
+    }],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
   },
 };
 

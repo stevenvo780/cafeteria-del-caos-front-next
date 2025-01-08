@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 interface PageProps {
   params: Promise<{ id: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 async function EventLoader({ params }: { params: Promise<{ id: string }> }) {

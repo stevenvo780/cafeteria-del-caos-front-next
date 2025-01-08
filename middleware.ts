@@ -47,13 +47,6 @@ function isRouteAllowedForRole(path: string, role: UserRole): boolean {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * 1. /api routes
-     * 2. /_next/static (static files)
-     * 3. /_next/image (image optimization files)
-     * 4. /favicon.ico (favicon file)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 }
