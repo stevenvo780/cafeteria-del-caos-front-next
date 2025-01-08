@@ -13,6 +13,7 @@ interface PageProps {
 export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
+  const baseUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
   const { id } = await params;
   const baseMetadata = {
     title: 'Biblioteca | Cafetería del Caos',
@@ -22,7 +23,7 @@ export async function generateMetadata({
       title: 'Biblioteca | Cafetería del Caos',
       description: 'Explora nuestra biblioteca de conocimiento',
       type: 'website',
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/library`,
+      url: `${baseUrl}/library`,
       images: [
         {
           url: '/images/logo.png',
